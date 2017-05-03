@@ -15,19 +15,23 @@ class Grid extends Component {
     };
   }
 
-  getCellGrid() {
+  getCellGrid(config) {
     let grid = [];
     let i, j;
     for (i = 0; i < this.width; i++) {
       for (j = 0; j < this.height; j++) {
-        grid.push(<Cell key={i * this.width + j} />);
+        let alive = false;
+        if (config.random) {
+          alive = Math.random() > 0.8;
+        }
+        grid.push(<Cell key={i * this.width + j} alive={alive}/>);
       }
     }
     return grid;
   }
 
   render() {
-    let grid = this.getCellGrid();
+    let grid = this.getCellGrid({random: true});
     return (
       <div id="grid" style={this.gridStyle}>
         {grid}
