@@ -77,7 +77,7 @@ class Grid extends Component {
                                             alive={newCellState}
                                             row={i} 
                                             col={j}
-                                            changeCellState={(...arg) => this.changeCellState(...arg)}/>);  
+                                            changeCellState={(...arg) => this.changeCellState(...arg)}/>);
         }
       }
     }
@@ -95,7 +95,7 @@ class Grid extends Component {
                                       alive={alive}
                                       row={i}
                                       col={j}
-                                      changeCellState={(...arg) => this.changeCellState(...arg)}/>);  
+                                      changeCellState={(...arg) => this.changeCellState(...arg)}/>);
     this.setState(() => {
       return {
         grid: grid

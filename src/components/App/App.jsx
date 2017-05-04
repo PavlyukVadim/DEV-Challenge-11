@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Grid from '../Grid/Grid';
 import Generation from '../Generation/Generation';
 import ControlPanel from '../ControlPanel/ControlPanel';
+import Map from '../Map/Map';
 import './App.scss';
 
 class App extends Component {
@@ -17,16 +18,6 @@ class App extends Component {
     this.changeMode = this.changeMode.bind(this);
     this.changeSpeed = this.changeSpeed.bind(this);
   }
-
-	componentDidMount() {
-	  window.addEventListener('scroll', this.handleScroll);
-	}
-
-	handleScroll(event) {
-	  let scrollTop = event.srcElement.body.scrollTop;
-	  let scrollLeft = event.srcElement.body.scrollLeft;
-	  console.log(scrollLeft);
-	}
 
   nextGeneration() {
     this.setState((prevState) => {
@@ -65,6 +56,7 @@ class App extends Component {
 				<ControlPanel changeMode={this.changeMode}
 											changeSpeed={this.changeSpeed}
 				  						speed={this.state.speed}/>
+				<Map/>
     	</div>
     );
   }

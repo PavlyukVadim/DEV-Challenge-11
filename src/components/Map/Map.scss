@@ -1,0 +1,18 @@
+#map {
+	position: fixed;
+	top: 20px;
+	right: 20px;
+	background-color: rgba(0, 0, 0, .92);
+	width: 7vw;
+	height: 7vh;
+	border: 2px solid red;
+	
+	#pointer {
+		width: 10px;
+		height: 10px;
+		transform: translateX(-50%) translateY(-50%);
+		border-radius: 50%;
+		background-color: #fff;
+		position: relative;
+	}
+}
