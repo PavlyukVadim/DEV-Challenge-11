@@ -18,6 +18,7 @@ class ControlPanel extends Component {
   }
   
   stopUpdate() {
+    //window.scrollTo(0, 0);
     this.props.changeMode('stop');
   }
 
@@ -41,10 +42,37 @@ class ControlPanel extends Component {
   render() {
     return (
     	<div id="control-panel">
-    	  <input type="button" value="Stop" onClick={this.stopUpdate}/>
-        <input type="button" value="Pause" onClick={this.pauseUpdate}/>
-        <input type="button" value="Start" onClick={this.startUpdate}/>
-        <input type="button" value="Clear" onClick={this.clearGrid}/>
+        <div className="position-control">
+          <div className="up">
+            <div>
+              <i className="fa fa-arrow-up" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div className="left-right">
+            <div>
+              <i className="fa fa-arrow-left" aria-hidden="true"></i>
+            </div>
+            <div>
+              <i className="fa fa-arrow-right" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div className="down">
+            <div>
+              <i className="fa fa-arrow-down" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+        <div className="buttons">
+          <div>
+            <input type="button" value="Start" onClick={this.startUpdate}/>
+            <input type="button" value="Pause" onClick={this.pauseUpdate}/>  
+          </div>
+          <div>
+            <input type="button" value="Stop" onClick={this.stopUpdate}/>
+            <input type="button" value="Clear" onClick={this.clearGrid}/>
+          </div>
+        </div>
+        <p className="speed-title">Speed: </p>
         <InputRange
           minValue={1}
           maxValue={10}
