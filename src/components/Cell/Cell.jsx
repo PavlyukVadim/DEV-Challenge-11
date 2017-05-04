@@ -29,14 +29,13 @@ class Cell extends Component {
     }
   }
 
-
   switchCellState() {
 		this.setState((prevState) => {
   		return {
   			alive: !prevState.alive
   		};
 		});
-		this.props.changeCellState(this.state.alive, this.props.row, this.props.col);
+		this.props.changeCellState(!this.state.alive, this.props.row, this.props.col);
   }
 
   render() {

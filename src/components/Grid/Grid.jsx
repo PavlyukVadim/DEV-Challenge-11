@@ -6,8 +6,8 @@ class Grid extends Component {
   
   constructor(props) {
     super(props);
-    this.width = 20;
-    this.height = 20;
+    this.width = 10;
+    this.height = 10;
     this.state = {
       grid: this.getCellGrid({random: true})
     };
@@ -29,10 +29,16 @@ class Grid extends Component {
       this.updateCellGrid();
     }
   }
-
+  
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.generation === nextProps.generation && nextProps.currMode !== 'clear') {
+    console.log('ggg');
+    if (this.generation === nextProps.generation && 
+        nextProps.currMode !== 'clear' && 
+        !this.changedCellState) {
       return false;
+    }
+    if(this.changedCellState) {
+      this.changedCellState = false;
     }
     this.generation = nextProps.generation;
     return true;
@@ -61,6 +67,7 @@ class Grid extends Component {
   }
 
   updateCellGrid() {
+    console.log('aaaa');
     let grid = [].concat(this.state.grid);
     let i, j;
     for (i = 0; i < this.width; i++) {
@@ -76,7 +83,6 @@ class Grid extends Component {
         }
       }
     }
-    
     this.setState(() => {
       return {
         grid: grid
@@ -85,19 +91,21 @@ class Grid extends Component {
   }
 
   changeCellState(...arg) {
-    let {alive, i, j} = arg;
+    console.log('m');
+    console.log(...arg);
+    let [alive, i, j] = arg;
     let grid = [].concat(this.state.grid);
     grid[i * this.width + j] = (<Cell key={i * this.width + j} 
                                       alive={alive}
                                       row={i}
                                       col={j}
                                       changeCellState={(...arg) => this.changeCellState(...arg)}/>);  
-    
     this.setState(() => {
       return {
         grid: grid
       }
     });
+    this.changedCellState = true;
   }
   
   updateCell(row, col, currCellState) {
@@ -121,6 +129,7 @@ class Grid extends Component {
   render() {
     console.log('c');
     let grid = this.state.grid;
+    console.log(grid.map(cell => cell.props.alive));
     return (
       <div id="grid" style={this.gridStyle}>
         {grid}
