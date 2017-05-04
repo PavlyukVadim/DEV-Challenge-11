@@ -6,8 +6,8 @@ class Grid extends Component {
   
   constructor(props) {
     super(props);
-    this.width = 10;
-    this.height = 10;
+    this.width = 200;
+    this.height = 200;
     this.state = {
       grid: this.getCellGrid({random: true})
     };
@@ -116,7 +116,6 @@ class Grid extends Component {
     neighborhood.push(grid[(row + 1) * this.width + col]);
     neighborhood.push(grid[(row + 1) * this.width + col + 1]);
     neighborhood = neighborhood.filter((cell) => cell && cell.props.alive);
-    //console.log(neighborhood.length);
     if (neighborhood.length === 2 || neighborhood.length === 3) {
       if(currCellState) {
         return true;
@@ -129,9 +128,7 @@ class Grid extends Component {
   }
 
   render() {
-    console.log('c');
     let grid = this.state.grid;
-    console.log(grid.map(cell => cell.props.alive));
     return (
       <div id="grid" style={this.gridStyle}>
         {grid}

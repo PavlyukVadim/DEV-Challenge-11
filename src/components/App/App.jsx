@@ -18,6 +18,16 @@ class App extends Component {
     this.changeSpeed = this.changeSpeed.bind(this);
   }
 
+	componentDidMount() {
+	  window.addEventListener('scroll', this.handleScroll);
+	}
+
+	handleScroll(event) {
+	  let scrollTop = event.srcElement.body.scrollTop;
+	  let scrollLeft = event.srcElement.body.scrollLeft;
+	  console.log(scrollLeft);
+	}
+
   nextGeneration() {
     this.setState((prevState) => {
       return {

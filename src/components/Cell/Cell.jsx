@@ -25,8 +25,11 @@ class Cell extends Component {
     	  this.state.alive === nextState.alive) {
 			return false;
     } else {
-    	return true;
+    	if (this.props.row < 20 && this.props.col < 20) {
+    	  return true;	
+    	}
     }
+    return false;
   }
 
   switchCellState() {
