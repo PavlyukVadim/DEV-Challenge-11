@@ -67,7 +67,7 @@ class Generation extends Component {
   	let generation = this.state.generation;
     return (
       <div id="generation">
-        <p>{'generation: ' + generation}</p>
+        <p>{'Generation: ' + generation}</p>
       </div> 
     );
   }
