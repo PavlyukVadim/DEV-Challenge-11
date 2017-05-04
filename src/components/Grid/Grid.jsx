@@ -31,7 +31,6 @@ class Grid extends Component {
   }
   
   shouldComponentUpdate(nextProps, nextState) {
-    console.log('ggg');
     if (this.generation === nextProps.generation && 
         nextProps.currMode !== 'clear' && 
         !this.changedCellState) {
@@ -67,7 +66,6 @@ class Grid extends Component {
   }
 
   updateCellGrid() {
-    console.log('aaaa');
     let grid = [].concat(this.state.grid);
     let i, j;
     for (i = 0; i < this.width; i++) {
@@ -91,8 +89,6 @@ class Grid extends Component {
   }
 
   changeCellState(...arg) {
-    console.log('m');
-    console.log(...arg);
     let [alive, i, j] = arg;
     let grid = [].concat(this.state.grid);
     grid[i * this.width + j] = (<Cell key={i * this.width + j} 
@@ -120,10 +116,16 @@ class Grid extends Component {
     neighborhood.push(grid[(row + 1) * this.width + col]);
     neighborhood.push(grid[(row + 1) * this.width + col + 1]);
     neighborhood = neighborhood.filter((cell) => cell && cell.props.alive);
-    if (neighborhood.length <= 1 || neighborhood.length >= 4) {
-      return false;
+    //console.log(neighborhood.length);
+    if (neighborhood.length === 2 || neighborhood.length === 3) {
+      if(currCellState) {
+        return true;
+      }
+    } 
+    if (neighborhood.length === 3 && !currCellState) {
+      return true;
     }
-    return true;
+    return false;
   }
 
   render() {
