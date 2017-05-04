@@ -19,7 +19,7 @@ class Generation extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.currMode === 'start') {
       this.autoChangeGeneration(); 
-    } else if (nextProps.currMode === 'pause') {
+    } else if (nextProps.currMode === 'pause' || nextProps.currMode === 'stop') {
       this.removeAutoChangeInterval(); 
     }
     if (nextProps.speed !== this.state.speed) {

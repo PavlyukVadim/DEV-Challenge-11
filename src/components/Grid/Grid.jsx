@@ -11,6 +11,7 @@ class Grid extends Component {
     this.state = {
       grid: this.getCellGrid({random: true})
     };
+    this.initialGrid = this.state.grid;
     this.gridStyle = {
       width: this.width * 14 + 'px',
       height: this.height * 14 + 'px'
@@ -25,6 +26,8 @@ class Grid extends Component {
           grid: this.getCellGrid({clear: true})
         }
       });
+    } else if (nextProps.currMode === 'stop') {
+      this.resetCellGrid();
     } else if (this.generation !== nextProps.generation) {
       this.updateCellGrid();
     }
@@ -86,6 +89,15 @@ class Grid extends Component {
         grid: grid
       }
     });
+  }
+
+  resetCellGrid() {
+    this.setState(() => {
+      return {
+        grid: this.initialGrid
+      }
+    }); 
+    this.changedCellState = true;
   }
 
   changeCellState(...arg) {
