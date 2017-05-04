@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Grid from '../Grid/Grid';
 import Generation from '../Generation/Generation';
+import ControlPanel from '../ControlPanel/ControlPanel';
 import './App.scss';
 
 class App extends Component {
@@ -8,9 +9,11 @@ class App extends Component {
 	constructor(props) {
     super(props);
     this.state = {
-			generation: 0
+			generation: 0,
+			mode: 'stop'
     };
     this.nextGeneration = this.nextGeneration.bind(this);
+    this.changeMode = this.changeMode.bind(this);
   }
 
   nextGeneration() {
@@ -21,12 +24,24 @@ class App extends Component {
     });
   }
 
+  changeMode(newMode) {
+  	if (newMode !== this.state.mode) {
+			this.setState((prevState) => {
+	      return {
+	        mode: newMode
+	      };
+	    });
+  	}
+  }
+
   render() {
-  	console.log(this.state.generation);
     return (
     	<div>
     		<Grid />
-				<Generation nextGeneration={this.nextGeneration}/>
+				<Generation 
+				  nextGeneration={this.nextGeneration}
+				  currMode={this.state.mode}/>
+				<ControlPanel changeMode={this.changeMode}/>
     	</div>
     );
   }

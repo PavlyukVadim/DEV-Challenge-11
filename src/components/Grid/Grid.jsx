@@ -6,8 +6,8 @@ class Grid extends Component {
   
   constructor(props) {
     super(props);
-    this.width = 200;
-    this.height = 200;
+    this.width = 20;
+    this.height = 20;
     this.state = {
       grid: this.getCellGrid()
     };

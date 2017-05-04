@@ -7,9 +7,21 @@ class Generation extends Component {
     super(props);
     this.state = {
 			generation: 0,
-      generationTime: 0 
+      generationTime: 0,
+      mode: this.props.currMode 
     };
-    this.autoChangeGeneration();
+    if (this.state.mode === 'start') {
+      this.autoChangeGeneration();
+    }
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.currMode);
+    if (nextProps.currMode === 'start') {
+      this.autoChangeGeneration(); 
+    } else if (nextProps.currMode === 'pause') {
+      this.removeAutoChangeInterval(); 
+    }
   }
 
   nextGeneration() {
@@ -22,9 +34,18 @@ class Generation extends Component {
   }
 
   autoChangeGeneration() {
-    let intervalTime = this.state.generationTime;
-    this.interval = setInterval(() => this.nextGeneration(), intervalTime * 5);
-  }  
+    if (!this.interval) {
+      let intervalTime = this.state.generationTime;
+      this.interval = setInterval(() => this.nextGeneration(), intervalTime);  
+    }
+  }
+  
+  removeAutoChangeInterval() {
+    if (this.interval) {
+      clearInterval(this.interval);
+      this.interval = undefined;
+    }
+  }
 
   render() {
   	let generation = this.state.generation;
