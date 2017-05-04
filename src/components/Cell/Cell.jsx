@@ -11,6 +11,25 @@ class Cell extends Component {
     this.switchCellState = this.switchCellState.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+  	if (this.state.alive !== nextProps.alive) {
+	  	this.setState(() => {
+	      return {
+	      	alive: nextProps.alive
+	      }
+	    });
+  	}
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.alive === nextProps.alive) {
+			return false;
+    } else {
+    	return true;
+    }
+  }
+
+
   switchCellState() {
 		this.setState((prevState) => {
   		return {
