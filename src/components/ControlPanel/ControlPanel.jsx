@@ -39,6 +39,7 @@ class ControlPanel extends Component {
   }
 
   changeSpeed(speed) {
+    this.props.changeMode('pause');
     this.setState({speed});
     this.props.changeSpeed(speed);
   }

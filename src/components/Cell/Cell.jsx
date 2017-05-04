@@ -21,12 +21,6 @@ class Cell extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-  	/*let sizeOfCell = 14;
-  	let numberOfCellsAbove = window.scrollObj.scrollTop / sizeOfCell - 5;
-  	let numberOfCellsLeft = window.scrollObj.scrollLeft / sizeOfCell - 5;
-    let numberOfCellsInRowOnScreen = window.innerWidth / sizeOfCell;
-    let numberOfCellsInColOnScreen = window.innerHeight / sizeOfCell;*/
-   
     if (this.state.alive === nextProps.alive && 
     	  this.state.alive === nextState.alive) {
 			return false;

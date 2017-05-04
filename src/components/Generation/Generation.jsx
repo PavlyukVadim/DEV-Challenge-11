@@ -7,7 +7,7 @@ class Generation extends Component {
     super(props);
     this.state = {
 			generation: 0,
-      generationTime: 500,
+      generationTime: 3000,
       mode: this.props.currMode,
       speed: this.props.speed
     };
@@ -17,12 +17,12 @@ class Generation extends Component {
   }
   
   componentWillReceiveProps(nextProps) {
-    if (nextProps.currMode === 'start') {
+    if (nextProps.currMode === 'start' && this.props.currMode !== 'start') {
       this.autoChangeGeneration(); 
     } else if (nextProps.currMode === 'pause' || nextProps.currMode === 'stop') {
       this.removeAutoChangeInterval(); 
     }
-    if (nextProps.speed !== this.state.speed) {
+    if (nextProps.speed !== this.props.speed) {
       this.setState(() => {
         return {
           speed: nextProps.speed
@@ -43,7 +43,7 @@ class Generation extends Component {
 
   autoChangeGeneration() {
     if (!this.interval) {
-      let intervalTime = this.state.generationTime / this.state.speed;
+      let intervalTime = this.state.generationTime / this.props.speed;
       this.interval = setInterval(() => this.nextGeneration(), intervalTime);
     }
   }
@@ -57,8 +57,7 @@ class Generation extends Component {
 
   changeSpeed() {
     if (this.interval) {
-      clearInterval(this.interval);
-      this.interval = undefined;
+      this.removeAutoChangeInterval();
       this.autoChangeGeneration();
     }
   }
