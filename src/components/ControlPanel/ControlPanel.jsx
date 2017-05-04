@@ -10,15 +10,19 @@ class ControlPanel extends Component {
     this.state = {
       speed: this.props.speed
     }
+    this.scrollStep = 200;
     this.stopUpdate = this.stopUpdate.bind(this);
     this.pauseUpdate = this.pauseUpdate.bind(this);
     this.startUpdate = this.startUpdate.bind(this);
     this.clearGrid = this.clearGrid.bind(this);
     this.changeSpeed = this.changeSpeed.bind(this);
+    this.toTop = this.toTop.bind(this);
+    this.toLeft = this.toLeft.bind(this);
+    this.toRight = this.toRight.bind(this);
+    this.toBottom = this.toBottom.bind(this);
   }
   
   stopUpdate() {
-    //window.scrollTo(0, 0);
     this.props.changeMode('stop');
   }
 
@@ -39,25 +43,49 @@ class ControlPanel extends Component {
     this.props.changeSpeed(speed);
   }
 
+  toTop() {
+    if (window.scrollObj) {
+      window.scrollTo(window.scrollObj.scrollLeft, window.scrollObj.scrollTop - this.scrollStep);
+    }
+  }
+
+  toLeft() {
+    if (window.scrollObj) {
+      window.scrollTo(window.scrollObj.scrollLeft - this.scrollStep, window.scrollObj.scrollTop);
+    }
+  }
+
+  toRight() {
+    if (window.scrollObj) {
+      window.scrollTo(window.scrollObj.scrollLeft + this.scrollStep, window.scrollObj.scrollTop);
+    }
+  }
+
+  toBottom() {
+    if (window.scrollObj) {
+      window.scrollTo(window.scrollObj.scrollLeft, window.scrollObj.scrollTop + this.scrollStep);
+    }
+  }
+
   render() {
     return (
     	<div id="control-panel">
         <div className="position-control">
           <div className="up">
-            <div>
+            <div onClick={this.toTop}>
               <i className="fa fa-arrow-up" aria-hidden="true"></i>
             </div>
           </div>
           <div className="left-right">
-            <div>
+            <div onClick={this.toLeft}>
               <i className="fa fa-arrow-left" aria-hidden="true"></i>
             </div>
-            <div>
+            <div onClick={this.toRight}>
               <i className="fa fa-arrow-right" aria-hidden="true"></i>
             </div>
           </div>
           <div className="down">
-            <div>
+            <div onClick={this.toBottom}>
               <i className="fa fa-arrow-down" aria-hidden="true"></i>
             </div>
           </div>
