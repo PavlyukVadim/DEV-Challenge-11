@@ -47,15 +47,14 @@ class App extends Component {
   render() {
     return (
     	<div>
-    		<Grid generation={this.state.generation}/>
-				<Generation 
-				  nextGeneration={this.nextGeneration}
-				  currMode={this.state.mode}
-				  speed={this.state.speed}/>
-				<ControlPanel 
-				  changeMode={this.changeMode}
-				  changeSpeed={this.changeSpeed}
-				  speed={this.state.speed}/>
+    		<Grid generation={this.state.generation}
+    		      currMode={this.state.mode}/>
+				<Generation nextGeneration={this.nextGeneration}
+				            currMode={this.state.mode}
+				            speed={this.state.speed}/>
+				<ControlPanel changeMode={this.changeMode}
+											changeSpeed={this.changeSpeed}
+				  						speed={this.state.speed}/>
     	</div>
     );
   }

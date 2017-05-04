@@ -9,7 +9,7 @@ class Grid extends Component {
     this.width = 20;
     this.height = 20;
     this.state = {
-      grid: this.getCellGrid()
+      grid: this.getCellGrid({random: true})
     };
     this.gridStyle = {
       width: this.width * 14 + 'px',
@@ -18,25 +18,43 @@ class Grid extends Component {
     this.generation = this.props.generation;
   }
 
-  componentWillReceiveProps() {
-    this.updateCellGrid();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.currMode === 'clear') {
+      this.setState(() => {
+        return {
+          grid: this.getCellGrid({clear: true})
+        }
+      });
+    } else if (this.generation !== nextProps.generation) {
+      this.updateCellGrid();
+    }
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.generation === nextProps.generation) {
+    if (this.generation === nextProps.generation && nextProps.currMode !== 'clear') {
       return false;
     }
     this.generation = nextProps.generation;
     return true;
   }
 
-  getCellGrid() {
+  getCellGrid(config) {
     let grid = [];
     let i, j;
     for (i = 0; i < this.width; i++) {
       for (j = 0; j < this.height; j++) {
-        let alive = Math.random() > 0.8;
-        grid.push(<Cell key={i * this.width + j} alive={alive}/>);
+        let alive;
+        if (config.random) {
+          alive = Math.random() > 0.8;
+        } else if (config.clear) {
+          alive = false;
+        }
+        
+        grid.push(<Cell key={i * this.width + j} 
+                        alive={alive} 
+                        row={i} 
+                        col={j} 
+                        changeCellState={(...arg) => this.changeCellState(...arg)}/>);
       }
     }
     return grid;
@@ -50,7 +68,11 @@ class Grid extends Component {
         let currCellState = grid[i * this.width + j].props.alive;
         let newCellState = this.updateCell(i, j, currCellState);
         if (currCellState != newCellState) {
-          grid[i * this.width + j] = (<Cell key={i * this.width + j} alive={newCellState}/>);  
+          grid[i * this.width + j] = (<Cell key={i * this.width + j} 
+                                            alive={newCellState}
+                                            row={i} 
+                                            col={j}
+                                            changeCellState={(...arg) => this.changeCellState(...arg)}/>);  
         }
       }
     }
@@ -60,7 +82,22 @@ class Grid extends Component {
         grid: grid
       }
     });
+  }
 
+  changeCellState(...arg) {
+    let {alive, i, j} = arg;
+    let grid = [].concat(this.state.grid);
+    grid[i * this.width + j] = (<Cell key={i * this.width + j} 
+                                      alive={alive}
+                                      row={i}
+                                      col={j}
+                                      changeCellState={(...arg) => this.changeCellState(...arg)}/>);  
+    
+    this.setState(() => {
+      return {
+        grid: grid
+      }
+    });
   }
   
   updateCell(row, col, currCellState) {
@@ -78,11 +115,11 @@ class Grid extends Component {
     if (neighborhood.length <= 1 || neighborhood.length >= 4) {
       return false;
     }
-
     return true;
   }
 
   render() {
+    console.log('c');
     let grid = this.state.grid;
     return (
       <div id="grid" style={this.gridStyle}>

@@ -13,6 +13,7 @@ class ControlPanel extends Component {
     this.stopUpdate = this.stopUpdate.bind(this);
     this.pauseUpdate = this.pauseUpdate.bind(this);
     this.startUpdate = this.startUpdate.bind(this);
+    this.clearGrid = this.clearGrid.bind(this);
     this.changeSpeed = this.changeSpeed.bind(this);
   }
   
@@ -28,6 +29,10 @@ class ControlPanel extends Component {
     this.props.changeMode('start');
   }
 
+  clearGrid() {
+    this.props.changeMode('clear'); 
+  }
+
   changeSpeed(speed) {
     this.setState({speed});
     this.props.changeSpeed(speed);
@@ -39,6 +44,7 @@ class ControlPanel extends Component {
     	  <input type="button" value="Stop" onClick={this.stopUpdate}/>
         <input type="button" value="Pause" onClick={this.pauseUpdate}/>
         <input type="button" value="Start" onClick={this.startUpdate}/>
+        <input type="button" value="Clear" onClick={this.clearGrid}/>
         <InputRange
           minValue={1}
           maxValue={10}

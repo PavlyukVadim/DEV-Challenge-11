@@ -8,7 +8,6 @@ class Cell extends Component {
     this.state = {
 			alive: this.props.alive
     };
-    this.switchCellState = this.switchCellState.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -22,7 +21,8 @@ class Cell extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.alive === nextProps.alive) {
+    if (this.state.alive === nextProps.alive && 
+    	  this.state.alive === nextState.alive) {
 			return false;
     } else {
     	return true;
@@ -36,13 +36,14 @@ class Cell extends Component {
   			alive: !prevState.alive
   		};
 		});
+		this.props.changeCellState(this.state.alive, this.props.row, this.props.col);
   }
 
   render() {
   	let alive = this.state.alive;
     return (
       <div className={"cell " + (alive ? "alive" : "")}
-           onClick={this.switchCellState}
+           onClick={() => {this.switchCellState()}}
            ref={(input) => { this.textInput = input; }}>
       </div>
     );
