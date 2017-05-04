@@ -1,5 +1,9 @@
 #control-panel {
-	bottom: 20px;
+	bottom: 40px;
 	position: fixed;
 	right: 20px;
+
+	input[type="button"] {
+		margin-bottom: 20px;
+	}
 }

@@ -10,10 +10,12 @@ class App extends Component {
     super(props);
     this.state = {
 			generation: 0,
-			mode: 'stop'
+			mode: 'stop',
+			speed: 5
     };
     this.nextGeneration = this.nextGeneration.bind(this);
     this.changeMode = this.changeMode.bind(this);
+    this.changeSpeed = this.changeSpeed.bind(this);
   }
 
   nextGeneration() {
@@ -26,7 +28,7 @@ class App extends Component {
 
   changeMode(newMode) {
   	if (newMode !== this.state.mode) {
-			this.setState((prevState) => {
+			this.setState(() => {
 	      return {
 	        mode: newMode
 	      };
@@ -34,14 +36,26 @@ class App extends Component {
   	}
   }
 
+  changeSpeed(newSpeed) {
+    this.setState(() => {
+      return {
+        speed: newSpeed
+      };
+    });
+  }
+
   render() {
     return (
     	<div>
-    		<Grid />
+    		<Grid generation={this.state.generation}/>
 				<Generation 
 				  nextGeneration={this.nextGeneration}
-				  currMode={this.state.mode}/>
-				<ControlPanel changeMode={this.changeMode}/>
+				  currMode={this.state.mode}
+				  speed={this.state.speed}/>
+				<ControlPanel 
+				  changeMode={this.changeMode}
+				  changeSpeed={this.changeSpeed}
+				  speed={this.state.speed}/>
     	</div>
     );
   }

@@ -7,12 +7,13 @@ class ControlPanel extends Component {
 
 	constructor(props) {
     super(props);
+    this.state = {
+      speed: this.props.speed
+    }
     this.stopUpdate = this.stopUpdate.bind(this);
     this.pauseUpdate = this.pauseUpdate.bind(this);
     this.startUpdate = this.startUpdate.bind(this);
-    this.state = {
-      speed: 5
-    }
+    this.changeSpeed = this.changeSpeed.bind(this);
   }
   
   stopUpdate() {
@@ -27,6 +28,11 @@ class ControlPanel extends Component {
     this.props.changeMode('start');
   }
 
+  changeSpeed(speed) {
+    this.setState({speed});
+    this.props.changeSpeed(speed);
+  }
+
   render() {
     return (
     	<div id="control-panel">
@@ -34,10 +40,10 @@ class ControlPanel extends Component {
         <input type="button" value="Pause" onClick={this.pauseUpdate}/>
         <input type="button" value="Start" onClick={this.startUpdate}/>
         <InputRange
-          minValue={0}
+          minValue={1}
           maxValue={10}
           value={this.state.speed}
-          onChange={speed => {this.setState({speed})}}/>
+          onChange={speed => {this.changeSpeed(speed)}}/>
     	</div>
     );
   }

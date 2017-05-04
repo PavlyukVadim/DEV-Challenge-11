@@ -15,10 +15,19 @@ class Grid extends Component {
       width: this.width * 14 + 'px',
       height: this.height * 14 + 'px'
     };
+    this.generation = this.props.generation;
   }
 
   componentWillReceiveProps() {
     this.updateCellGrid();
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.generation === nextProps.generation) {
+      return false;
+    }
+    this.generation = nextProps.generation;
+    return true;
   }
 
   getCellGrid() {
