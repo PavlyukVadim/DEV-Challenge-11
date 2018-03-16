@@ -1,20 +1,19 @@
 import React, { Component } from 'react';
-import Cell from '../Cell/Cell';
-import './Grid.scss';
+import Cell from '../Cell';
+import './index.scss';
 
 class Grid extends Component {
-  
   constructor(props) {
     super(props);
     this.width = 200;
     this.height = 200;
     this.state = {
-      grid: this.getCellGrid({random: true})
+      grid: this.getCellGrid({random: true}),
     };
     this.initialGrid = this.state.grid;
     this.gridStyle = {
       width: this.width * 14 + 'px',
-      height: this.height * 14 + 'px'
+      height: this.height * 14 + 'px',
     };
     this.generation = this.props.generation;
   }
@@ -23,8 +22,8 @@ class Grid extends Component {
     if (nextProps.currMode === 'clear') {
       this.setState(() => {
         return {
-          grid: this.getCellGrid({clear: true})
-        }
+          grid: this.getCellGrid({clear: true}),
+        };
       });
     } else if (nextProps.currMode === 'stop') {
       this.resetCellGrid();
@@ -33,10 +32,12 @@ class Grid extends Component {
     }
   }
   
-  shouldComponentUpdate(nextProps, nextState) {
-    if (this.generation === nextProps.generation && 
-        nextProps.currMode !== 'clear' && 
-        !this.changedCellState) {
+  shouldComponentUpdate(nextProps) {
+    if (
+      this.generation === nextProps.generation &&
+      nextProps.currMode !== 'clear' &&
+      !this.changedCellState
+    ) {
       return false;
     }
     if(this.changedCellState) {
@@ -58,11 +59,15 @@ class Grid extends Component {
           alive = false;
         }
         
-        grid.push(<Cell key={i * this.width + j} 
-                        alive={alive} 
-                        row={i} 
-                        col={j} 
-                        changeCellState={(...arg) => this.changeCellState(...arg)}/>);
+        grid.push(
+          <Cell
+            key={i * this.width + j}
+            alive={alive}
+            row={i}
+            col={j}
+            changeCellState={(...arg) => this.changeCellState(...arg)}
+          />
+        );
       }
     }
     return grid;
@@ -75,18 +80,22 @@ class Grid extends Component {
       for (j = 0; j < this.height; j++) {
         let currCellState = grid[i * this.width + j].props.alive;
         let newCellState = this.updateCell(i, j, currCellState);
-        if (currCellState != newCellState) {
-          grid[i * this.width + j] = (<Cell key={i * this.width + j} 
-                                            alive={newCellState}
-                                            row={i} 
-                                            col={j}
-                                            changeCellState={(...arg) => this.changeCellState(...arg)}/>);
+        if (currCellState !== newCellState) {
+          grid[i * this.width + j] = (
+            <Cell
+              key={i * this.width + j}
+              alive={newCellState}
+              row={i}
+              col={j}
+              changeCellState={(...arg) => this.changeCellState(...arg)}
+            />
+          );
         }
       }
     }
     this.setState(() => {
       return {
-        grid: grid
+        grid: grid,
       }
     });
   }
@@ -94,7 +103,7 @@ class Grid extends Component {
   resetCellGrid() {
     this.setState(() => {
       return {
-        grid: this.initialGrid
+        grid: this.initialGrid,
       }
     }); 
     this.changedCellState = true;
@@ -103,14 +112,18 @@ class Grid extends Component {
   changeCellState(...arg) {
     let [alive, i, j] = arg;
     let grid = [].concat(this.state.grid);
-    grid[i * this.width + j] = (<Cell key={i * this.width + j} 
-                                      alive={alive}
-                                      row={i}
-                                      col={j}
-                                      changeCellState={(...arg) => this.changeCellState(...arg)}/>);
+    grid[i * this.width + j] = (
+      <Cell
+        key={i * this.width + j}
+        alive={alive}
+        row={i}
+        col={j}
+        changeCellState={(...arg) => this.changeCellState(...arg)}
+      />
+    );
     this.setState(() => {
       return {
-        grid: grid
+        grid: grid,
       }
     });
     this.changedCellState = true;

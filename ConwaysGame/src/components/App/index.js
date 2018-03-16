@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Grid from '../Grid/Grid';
-import Generation from '../Generation/Generation';
-import ControlPanel from '../ControlPanel/ControlPanel';
-import Map from '../Map/Map';
-import './App.scss';
+import Grid from '../Grid';
+import Generation from '../Generation';
+import ControlPanel from '../ControlPanel';
+import Map from '../Map';
+import './index.scss';
 
 class App extends Component {
 
@@ -12,7 +12,7 @@ class App extends Component {
     this.state = {
 			generation: 0,
 			mode: 'stop',
-			speed: 5
+			speed: 5,
     };
     this.nextGeneration = this.nextGeneration.bind(this);
     this.changeMode = this.changeMode.bind(this);
@@ -22,7 +22,7 @@ class App extends Component {
   nextGeneration() {
     this.setState((prevState) => {
       return {
-        generation: prevState.generation + 1
+        generation: prevState.generation + 1,
       };
     });
   }
@@ -31,7 +31,7 @@ class App extends Component {
   	if (newMode !== this.state.mode) {
 			this.setState(() => {
 	      return {
-	        mode: newMode
+	        mode: newMode,
 	      };
 	    });
   	}
@@ -40,7 +40,7 @@ class App extends Component {
   changeSpeed(newSpeed) {
     this.setState(() => {
       return {
-        speed: newSpeed
+        speed: newSpeed,
       };
     });
   }
@@ -48,15 +48,21 @@ class App extends Component {
   render() {
     return (
     	<div>
-    		<Grid generation={this.state.generation}
-    		      currMode={this.state.mode}/>
-				<Generation nextGeneration={this.nextGeneration}
-				            currMode={this.state.mode}
-				            speed={this.state.speed}/>
-				<ControlPanel changeMode={this.changeMode}
-											changeSpeed={this.changeSpeed}
-				  						speed={this.state.speed}/>
-				<Map/>
+    		<Grid
+          generation={this.state.generation}
+    		  currMode={this.state.mode}
+        />
+				<Generation
+          nextGeneration={this.nextGeneration}
+				  currMode={this.state.mode}
+				  speed={this.state.speed}
+        />
+				<ControlPanel
+          changeMode={this.changeMode}
+					changeSpeed={this.changeSpeed}
+				  speed={this.state.speed}
+        />
+				<Map />
     	</div>
     );
   }

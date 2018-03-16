@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import './Generation.scss';
+import './index.scss';
 
 class Generation extends Component {
-  
   constructor(props) {
     super(props);
     this.state = {
 			generation: 0,
       generationTime: 3000,
       mode: this.props.currMode,
-      speed: this.props.speed
+      speed: this.props.speed,
     };
     if (this.state.mode === 'start') {
       this.autoChangeGeneration();
@@ -20,12 +19,12 @@ class Generation extends Component {
     if (nextProps.currMode === 'start' && this.props.currMode !== 'start') {
       this.autoChangeGeneration(); 
     } else if (nextProps.currMode === 'pause' || nextProps.currMode === 'stop') {
-      this.removeAutoChangeInterval(); 
+      this.removeAutoChangeInterval();
     }
     if (nextProps.speed !== this.props.speed) {
       this.setState(() => {
         return {
-          speed: nextProps.speed
+          speed: nextProps.speed,
         };
       });
       this.changeSpeed();
@@ -35,7 +34,7 @@ class Generation extends Component {
   nextGeneration() {
     this.setState((prevState) => {
       return {
-        generation: prevState.generation + 1
+        generation: prevState.generation + 1,
       };
     });
     this.props.nextGeneration();

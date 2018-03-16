@@ -1,13 +1,13 @@
-const express = require('express');
-const path = require('path');
-const app = express();
+const express = require('express')
+const path = require('path')
+const app = express()
 
-app.use(express.static('./build'));
+app.use(express.static('./build'))
 
-app.get('/', function (req, res) {
-  res.sendFile(path.join(__dirname, './build', 'index.html'));
-});
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, './build', 'index.html'))
+})
 
-app.listen(9000, function(){
-  console.log('Server running at localhost:9000');
-});
+app.listen(9000, () => {
+  console.log('Server running at localhost:9000')
+})
