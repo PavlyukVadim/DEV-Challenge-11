@@ -37,14 +37,17 @@ const clearCanvas = (ctx) => {
 window.onload = () => {
   const canvas = document.getElementById('canvas')
   const ctx = canvas.getContext('2d')
+  const player = new Player()
   const game = {
     ctx,
     canvas: {
       width: canvasWidth,
       height: canvasHeight,
     },
+    player,
     speed: 20,
-    player: new Player(),
   }
+  addEventListener('keydown', (e) => player.moveCarByEvent.bind(player)(e))
+  addEventListener('keyup', () => player.stopTurning())
   render(game)
 }
