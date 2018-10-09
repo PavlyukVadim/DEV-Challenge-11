@@ -3,6 +3,8 @@ import {
   moveRoad,
 } from './road'
 
+import Player from './player'
+
 const canvasWidth = 900
 const canvasHeight = 600
 
@@ -11,27 +13,26 @@ const fps = 24
 let prevTime = 0
 
 const render = (game, time) => {
-  const { ctx, speed } = game
+  const {
+    ctx,
+    player,
+    speed,
+  } = game
 
   if (time - prevTime > 1000 / fps) {
-  // counterOfF++
-  // if (counterOfF === (fps * timeToMoveDown) / 1000) {
-  //   counterOfF = 0
-  //   if (block && block.isAlive) {
-  //     position.y++
-  //   } else {
-  //     block = null
-  //   }
-  // }
-
+    clearCanvas(ctx)
     moveRoad(game, speed)
     drawRoad(game)
+    player.draw(ctx)
     prevTime = time
   }
 
   requestAnimationFrame((time) => render(game, time))
 };
 
+const clearCanvas = (ctx) => {
+  ctx.clearRect(0, 0, canvasHeight, canvasWidth)
+}
 
 window.onload = () => {
   const canvas = document.getElementById('canvas')
@@ -43,6 +44,7 @@ window.onload = () => {
       height: canvasHeight,
     },
     speed: 20,
+    player: new Player(),
   }
   render(game)
 }

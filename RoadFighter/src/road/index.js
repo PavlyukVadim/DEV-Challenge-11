@@ -46,7 +46,6 @@ export const drawRoad = (game) => {
 export const moveRoad = (game, shiftY) => {
   if (!game.road) return
   const { road: { lineParts = [] } } = game
-  // console.log('lineParts', lineParts)
   lineParts.forEach((linePart) => {
     linePart.move(shiftY)
   })
@@ -62,7 +61,6 @@ const getInitialMarkupLines = (game) => {
   const { canvas: { width: canvasWidth } } = game
   const numberOfLines = numberOfRoadStrips - 1
   const numberOfLineParts = roadHeight / (linePartLength + gapLength)
-  console.log('numberOfLineParts', numberOfLineParts)
   const arrayOfLinesParts = Array
     .from({length: numberOfLineParts + 1})
     .map((part, idx) => {
