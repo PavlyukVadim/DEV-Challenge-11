@@ -47,7 +47,7 @@ export const moveRoad = (game, shiftY) => {
   if (!game.road) return
   const { road: { lineParts = [] } } = game
   lineParts.forEach((linePart) => {
-    linePart.move(shiftY)
+    linePart.move(shiftY, game)
   })
 }
 

@@ -1,23 +1,19 @@
-import carImg from './../assets/car.png'
+import Car from './../car'
+import {
+  setSpeed,
+  activatePedal,
+  resetPedal,
+} from './../helpers'
 
-class Player {
-  constructor(x = 300, y = 400) {
-    this.x = x
-    this.y = y
-    const image = new Image()
-    image.src = carImg
-    this.image = image
+
+class Player extends Car {
+  constructor(x = 300, y = 400, imgSrc) {
+    super(x, y, imgSrc)
     this.rotationDirection = null
   }
 
   draw(ctx) {
-    const {
-      x,
-      y,
-      prevPos,
-      rotationDirection,
-    } = this
-
+    const { x, y, rotationDirection } = this
     const {
       width: pWidth,
       height: pHeight,
@@ -30,10 +26,10 @@ class Player {
 
       var rad = deg * Math.PI / 180
 
-      //Set the origin to the center of the image
+      // Set the origin to the center of the image
       ctx.translate(x + pWidth / 2, y + pHeight / 5)
 
-      //Rotate the canvas around the origin
+      // Rotate the canvas around the origin
       ctx.rotate(rad)
       ctx.drawImage(this.image, pWidth / 2 * (-1), pHeight / 5 * (-1), pWidth, pHeight)
 
@@ -43,7 +39,7 @@ class Player {
     }
   }
 
-  moveCarByEvent(e) {
+  moveCarByEvent(e, game) {
     switch(e.key) {
       case 'ArrowLeft': {
         this.x -= 10
@@ -56,12 +52,32 @@ class Player {
         break
       }
       case 'ArrowDown': {
-        if (this.y + 10 < 100) {
-          this.y++
-        }
+        activatePedal(game, 'brake')
         break
       }
       case 'ArrowUp': {
+        activatePedal(game, 'gas')
+        break
+      }
+    }
+  }
+
+  stopKeyEvent(e, game) {
+    switch(e.key) {
+      case 'ArrowLeft': {
+        this.stopTurning()
+        break
+      }
+      case 'ArrowRight': {
+        this.stopTurning()
+        break
+      }
+      case 'ArrowDown': {
+        resetPedal(game, 'brake')
+        break
+      }
+      case 'ArrowUp': {
+        resetPedal(game, 'gas')
         break
       }
     }
