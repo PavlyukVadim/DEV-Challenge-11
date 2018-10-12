@@ -7,6 +7,7 @@ import { drawMap } from './map'
 
 import Player from './player'
 import Enemy from './enemy'
+import Explosion from './explosion'
 
 import {
   getSpeed,
@@ -14,6 +15,7 @@ import {
   updateSpeed,
   checkCollisions,
   controlEnemies,
+  controlExplosions,
 } from './helpers'
 
 import playerImg from './assets/car.png'
@@ -45,6 +47,7 @@ const render = (game, time) => {
     player.draw(ctx)
 
     controlEnemies(game)
+    controlExplosions(game)
 
     checkEnemiesCollisions(game)
 
@@ -96,6 +99,7 @@ window.onload = () => {
     objects: {
       enemies: [],
       trees: [],
+      explosions: [],
     }
   }
   setSpeed(game, 20)

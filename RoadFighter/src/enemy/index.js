@@ -28,7 +28,7 @@ class Enemy extends Car {
   move(game) {
     const speed = getSpeed(game)
     this.y = this.y + (speed - this.speed)
-    this.x++
+    // this.x++
   }
 
   validation(game) {

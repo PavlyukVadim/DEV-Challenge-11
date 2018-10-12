@@ -13,4 +13,5 @@ export {
 export {
   controlEnemies,
   controlTrees,
+  controlExplosions,
 } from './objectsGenerationController'
