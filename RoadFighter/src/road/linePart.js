@@ -6,11 +6,11 @@ class LinePart {
     this.y = y
   }
 
-  move(shiftY, game) {
+  move(game) {
     const speed = getSpeed(game)
     LinePart.linePartLength = 50 + speed
     const { y } = this
-    this.y += shiftY
+    this.y += speed
     if (this.y > 600) {
       this.y = this.y - 600 - LinePart.linePartLength
     }

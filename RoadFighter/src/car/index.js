@@ -2,9 +2,8 @@ class Car {
   constructor(x = 0, y = 0, imgSrc) {
     this.x = x
     this.y = y
-    const image = new Image()
-    image.src = imgSrc
-    this.image = image
+    this.image = new Image()
+    this.image.src = imgSrc
   }
 
   draw(ctx, game) {

@@ -1,5 +1,6 @@
 import Car from './../car'
 import {
+  getSpeed,
   setSpeed,
   activatePedal,
   resetPedal,
@@ -40,14 +41,15 @@ class Player extends Car {
   }
 
   moveCarByEvent(e, game) {
+    const speed = getSpeed(game)
     switch(e.key) {
       case 'ArrowLeft': {
-        this.x -= 10
+        this.x -= 0.4 * speed
         this.rotationDirection = 'left'
         break
       }
       case 'ArrowRight': {
-        this.x += 10
+        this.x += 0.4 * speed
         this.rotationDirection = 'right'
         break
       }

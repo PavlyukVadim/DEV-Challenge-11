@@ -1,4 +1,4 @@
-const acceleration = 5
+const acceleration = 10
 
 const MAX_SPEED = 50
 const MIN_SPEED = 10
@@ -29,7 +29,7 @@ export const updateSpeed = (game, newSpeed) => {
     if (initialActivePedal === 'gas') {
       newSpeed = currentSpeed + timeFrom * acceleration
     } else if (initialActivePedal === 'brake') {
-      newSpeed = currentSpeed - timeFrom * (acceleration * 2)
+      newSpeed = currentSpeed - timeFrom * (acceleration * 5)
     } else {
       newSpeed = currentSpeed - timeFrom * (acceleration / 2)
     }

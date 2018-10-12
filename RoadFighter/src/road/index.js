@@ -1,12 +1,17 @@
 import LinePart from './linePart'
+import Tree from './tree'
+
+import {
+  controlTrees,
+} from './../helpers'
 
 const roadWidth = 500
 const roadHeight = 600
 const numberOfRoadStrips = 2
 
-const roadColor = 'darkslategray'
+const roadColor = '#555'
 const roadBorderColor = '#72bb53'
-const borderWidth = 10
+const borderWidth = 0
 
 export const drawRoad = (game) => {
   const {
@@ -38,16 +43,30 @@ export const drawRoad = (game) => {
       lineParts,
     }
   }
+
+  controlTrees(game)
+
   const { road: { lineParts } } = game
   drawRoadMarkupLines(lineParts, ctx)
 };
 
 
-export const moveRoad = (game, shiftY) => {
+export const getRoadWidth = () => {
+  return roadWidth
+}
+
+export const moveRoad = (game) => {
   if (!game.road) return
-  const { road: { lineParts = [] } } = game
+  const {
+    road: { lineParts = [] },
+    objects: { trees = [] },
+  } = game
   lineParts.forEach((linePart) => {
-    linePart.move(shiftY, game)
+    linePart.move(game)
+  })
+
+  trees.forEach((tree) => {
+    tree.move(game)
   })
 }
 

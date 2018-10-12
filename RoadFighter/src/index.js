@@ -6,18 +6,19 @@ import {
 import { drawMap } from './map'
 
 import Player from './player'
-import Enemy from './Enemy'
+import Enemy from './enemy'
 
 import {
   getSpeed,
   setSpeed,
   updateSpeed,
+  checkCollisions,
+  controlEnemies,
 } from './helpers'
 
-import carImg from './assets/enemy.png'
 import playerImg from './assets/car.png'
 
-const canvasWidth = 900
+const canvasWidth = 1000
 const canvasHeight = 600
 
 const { requestAnimationFrame } = window
@@ -28,24 +29,24 @@ const render = (game, time) => {
   const {
     ctx,
     player,
-    enemy,
   } = game
 
   const speed = getSpeed(game)
 
   if (time - prevTime > 1000 / fps) {
     clearCanvas(ctx)
+
+    moveRoad(game)
     drawRoad(game)
-    moveRoad(game, speed)
 
     updateSpeed(game, speed)
     outputSpeed(speed)
 
     player.draw(ctx)
-    enemy.move(game)
-    enemy.draw(ctx)
 
-    checkCollisions(game)
+    controlEnemies(game)
+
+    checkEnemiesCollisions(game)
 
     prevTime = time
   }
@@ -53,27 +54,16 @@ const render = (game, time) => {
   requestAnimationFrame((time) => render(game, time))
 }
 
-const checkCollisions = (game) => {
-  const { player, enemy } = game
-  if (
-    (
-      (
-        (player.x <= enemy.x + Enemy.width) &&
-        (player.x >= enemy.x)
-      ) ||
-      (
-        (player.x + Player.width >= enemy.x) &&
-        (player.x + Player.width <= enemy.x + Enemy.width)
-      )
-    ) &&
-    (
-      (player.y <= enemy.y + Enemy.height) && (player.y > enemy.y) ||
-      (player.y <= enemy.y) && (player.y + Player.height > enemy.y)
-    )
-  ) {
-    setSpeed(game, 0)
-    console.log('checkCollisions')
-  }
+const checkEnemiesCollisions = (game) => {
+  const {
+    player,
+    objects: { enemies = []},
+  } = game
+
+  enemies.forEach((enemy) => {
+    const isCollision = checkCollisions(player, enemy, Player, Enemy)
+    if (isCollision) { console.log('coli') }
+  })
 }
 
 const speedEl = document.getElementById('speed')
@@ -82,7 +72,7 @@ const outputSpeed = (speed) => {
 }
 
 const clearCanvas = (ctx) => {
-  ctx.clearRect(0, 0, canvasHeight, canvasWidth)
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 }
 
 window.onload = () => {
@@ -103,7 +93,10 @@ window.onload = () => {
       prevPedal: 'gas',
     },
     player,
-    enemy: new Enemy(300, 100, carImg)
+    objects: {
+      enemies: [],
+      trees: [],
+    }
   }
   setSpeed(game, 20)
   addEventListener('keydown', (e) => player.moveCarByEvent.bind(player)(e, game))
