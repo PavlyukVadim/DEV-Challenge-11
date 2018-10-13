@@ -3,6 +3,7 @@ import Car from './../car'
 import {
   getSpeed,
   checkCollisions,
+  getCanvasProps,
 } from './../helpers'
 import { getRoadWidth } from './../road'
 
@@ -11,7 +12,6 @@ const ENEMY_MIN_SPEED = 15
 
 class Enemy extends Car {
   constructor(game, imgSrc) {
-
     const { canvas: { width: canvasWidth }} = game
     const roadWidth = getRoadWidth()
 
@@ -28,14 +28,15 @@ class Enemy extends Car {
   move(game) {
     const speed = getSpeed(game)
     this.y = this.y + (speed - this.speed)
-    // this.x++
   }
 
   validation(game) {
     const { y } = this
+    const { height: canvasHeight } = getCanvasProps(game)
+
     if (
-      (y + Enemy.height < -600) ||
-      (y > 600)
+      (y + Enemy.height < -canvasHeight) ||
+      (y > canvasHeight)
     ) return false
 
     const {

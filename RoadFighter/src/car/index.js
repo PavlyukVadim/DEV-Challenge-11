@@ -19,6 +19,7 @@ class Car {
     } = Car
 
     ctx.drawImage(this.image, x, y, Car.width, Car.height)
+    this.drawn = true
   }
 }
 Car.height = 160

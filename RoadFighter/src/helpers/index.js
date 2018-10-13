@@ -3,7 +3,10 @@ export {
   getSpeed,
   updateSpeed,
   activatePedal,
+  activateTurn,
+  getActiveTurn,
   resetPedal,
+  resetTurn,
 } from './speedController'
 
 export {
@@ -15,3 +18,8 @@ export {
   controlTrees,
   controlExplosions,
 } from './objectsGenerationController'
+
+export {
+  getRoadsideWidth,
+  getCanvasProps,
+} from './common'

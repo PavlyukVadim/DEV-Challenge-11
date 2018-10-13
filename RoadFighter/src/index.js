@@ -18,10 +18,13 @@ import {
   controlExplosions,
 } from './helpers'
 
-import playerImg from './assets/car.png'
+import config from './config'
 
-const canvasWidth = 1000
-const canvasHeight = 600
+const canvasWidth = Math.min(
+  window.innerWidth,
+  config.maxCanvasWidth,
+)
+const canvasHeight = window.innerHeight
 
 const { requestAnimationFrame } = window
 const fps = 24
@@ -44,6 +47,7 @@ const render = (game, time) => {
     updateSpeed(game, speed)
     outputSpeed(speed)
 
+    player.move(game)
     player.draw(ctx)
 
     controlEnemies(game)
@@ -71,7 +75,7 @@ const checkEnemiesCollisions = (game) => {
 
 const speedEl = document.getElementById('speed')
 const outputSpeed = (speed) => {
-  speedEl.innerHTML = speed
+  speedEl.innerHTML = Number(speed).toFixed(1)
 }
 
 const clearCanvas = (ctx) => {
@@ -80,8 +84,15 @@ const clearCanvas = (ctx) => {
 
 window.onload = () => {
   const canvas = document.getElementById('canvas')
+  canvas.width = canvasWidth
+  canvas.height = canvasHeight
+
   const ctx = canvas.getContext('2d')
-  const player = new Player(300, 400, playerImg)
+
+  const playerX = (canvasWidth - Player.width) / 2 - 10
+  const playerY = (canvasHeight - Player.height) - 50
+
+  const player = new Player(playerX, playerY)
   const game = {
     ctx,
     canvas: {
@@ -94,13 +105,18 @@ window.onload = () => {
         brake: false,
       },
       prevPedal: 'gas',
+      turn: {
+        left: false,
+        right: false,
+      },
     },
     player,
     objects: {
       enemies: [],
       trees: [],
       explosions: [],
-    }
+    },
+    road: [],
   }
   setSpeed(game, 20)
   addEventListener('keydown', (e) => player.moveCarByEvent.bind(player)(e, game))

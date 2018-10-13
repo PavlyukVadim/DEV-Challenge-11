@@ -4,6 +4,8 @@ import enemyImg from './../assets/enemy.png'
 import Tree from './../road/tree'
 import Explosion from './../explosion'
 
+import config from './../config'
+
 // enemies
 
 const MAX_ENEMIES_NUMBER = 3
@@ -31,6 +33,7 @@ export const controlEnemies = (game) => {
       enemy.draw(ctx)
     } else {
       const removedEnemy = enemies.splice(idx, 1)[0]
+      if (!removedEnemy.drawn) return
       const explosion = new Explosion(removedEnemy.x, removedEnemy.y)
       explosions.push(explosion)
     }
@@ -40,10 +43,11 @@ export const controlEnemies = (game) => {
 // trees
 
 const MAX_TREES_NUMBER = 50
+const { probabilityOfTreeCreation } = config
 export const controlTrees = (game) => {
   const { objects: { trees }, ctx } = game
   if (trees.length < MAX_TREES_NUMBER) {
-    const shouldGenerateNew = Math.random() > 0.9
+    const shouldGenerateNew = Math.random() < probabilityOfTreeCreation
     if (shouldGenerateNew) {
       const tree = new Tree(game)
       trees.push(tree)
@@ -51,12 +55,7 @@ export const controlTrees = (game) => {
   }
 
   trees.forEach((tree, idx) => {
-    const isAlive = tree.validation()
-    if (isAlive) {
-      tree.draw(ctx)
-    } else {
-      trees.splice(idx, 1)
-    }
+    tree.draw(ctx)
   })
 }
 
@@ -67,7 +66,7 @@ export const controlExplosions = (game) => {
 
   explosions.forEach((explosion, idx) => {
     explosion.move(game)
-    const isAlive = explosion.validation()
+    const isAlive = explosion.validation(game)
     if (isAlive) {
       explosion.draw(ctx)
     } else {

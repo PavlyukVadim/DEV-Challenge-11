@@ -3,12 +3,18 @@ import {
   getSpeed,
   setSpeed,
   activatePedal,
+  activateTurn,
+  getActiveTurn,
   resetPedal,
+  resetTurn,
+  getRoadsideWidth,
 } from './../helpers'
 
+import { getRoadWidth } from './../road'
+import playerImg from './../assets/car.png'
 
 class Player extends Car {
-  constructor(x = 300, y = 400, imgSrc) {
+  constructor(x = 300, y = 400, imgSrc = playerImg) {
     super(x, y, imgSrc)
     this.rotationDirection = null
   }
@@ -40,16 +46,29 @@ class Player extends Car {
     }
   }
 
-  moveCarByEvent(e, game) {
+  move(game) {
     const speed = getSpeed(game)
+    const turn = getActiveTurn(game)
+
+    const roadWidth = getRoadWidth()
+    const roadsideWidth = getRoadsideWidth(game)
+
+    if (turn === 'left' && this.x > roadsideWidth) {
+      this.x -= 0.4 * speed
+    } else if (turn === 'right' && this.x < roadsideWidth + roadWidth - Player.width) {
+      this.x += 0.4 * speed
+    }
+  }
+
+  moveCarByEvent(e, game) {
     switch(e.key) {
       case 'ArrowLeft': {
-        this.x -= 0.4 * speed
+        activateTurn(game, 'left')
         this.rotationDirection = 'left'
         break
       }
       case 'ArrowRight': {
-        this.x += 0.4 * speed
+        activateTurn(game, 'right')
         this.rotationDirection = 'right'
         break
       }
@@ -68,10 +87,12 @@ class Player extends Car {
     switch(e.key) {
       case 'ArrowLeft': {
         this.stopTurning()
+        resetTurn(game, 'left')
         break
       }
       case 'ArrowRight': {
         this.stopTurning()
+        resetTurn(game, 'right')
         break
       }
       case 'ArrowDown': {

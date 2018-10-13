@@ -1,53 +1,92 @@
-import LinePart from './linePart'
 import Tree from './tree'
 
 import {
   controlTrees,
+  getSpeed,
+  getRoadsideWidth,
 } from './../helpers'
 
-const roadWidth = 500
-const roadHeight = 600
-const numberOfRoadStrips = 2
+import roadTexture from './../assets/road.jpg'
 
-const roadColor = '#555'
-const roadBorderColor = '#72bb53'
-const borderWidth = 0
+const roadWidth = 400
+
+const roadImg = new Image()
+roadImg.src = roadTexture
+
+class RoadPart {
+  constructor(game, x, y) {
+    const {
+      ctx,
+      canvas: {
+        width: canvasWidth,
+        height: canvasHeight,
+      },
+      road,
+    } = game
+
+    const roadX = (x !== undefined) ? x : (canvasWidth - roadWidth) / 2
+    const roadY = (y !== undefined) ? y : 0
+
+    this.x = roadX
+    this.y = roadY
+    this.roadHeight = canvasHeight
+  }
+
+  draw(ctx) {
+    ctx.drawImage(
+      roadImg,
+      0, 0,
+      400, 400,
+      this.x, this.y,
+      roadWidth, this.roadHeight
+    )
+  }
+
+  move(game) {
+    const speed = getSpeed(game)
+    this.y += speed
+
+    if (this.y >= this.roadHeight) {
+      const anotherPart = getNeighborPart(game, this)
+      this.y = anotherPart.y - this.roadHeight + speed
+    }
+  }
+}
+
+const getNeighborPart = (game, somePart) => {
+  const { road } = game
+  return road.find((part) => part !== somePart)
+}
 
 export const drawRoad = (game) => {
   const {
     ctx,
-    canvas: { width: canvasWidth },
+    canvas: {
+      height: canvasHeight,
+    },
     road,
   } = game
+  if (!road.length) {
+    const roadPart1 = new RoadPart(game)
+    const roadPart2 = new RoadPart(game, undefined, canvasHeight)
 
-  ctx.fillStyle = roadColor
-  ctx.strokeStyle = roadBorderColor
-  ctx.lineWidth = borderWidth
-
-  const roadX = (canvasWidth - roadWidth) / 2
-  const roadY = 0
-
-  const args = [
-    roadX,
-    roadY,
-    roadWidth,
-    roadHeight,
-  ]
-
-  ctx.fillRect(...args)
-  ctx.strokeRect(...args)
-
-  if (!road) {
-    const lineParts = getInitialMarkupLines(game)
-    game.road = {
-      lineParts,
-    }
+    road.push(roadPart1, roadPart2)
   }
 
-  controlTrees(game)
+  const roadsideWidth = getRoadsideWidth(game)
+  const roadWidth = getRoadWidth()
 
-  const { road: { lineParts } } = game
-  drawRoadMarkupLines(lineParts, ctx)
+  ctx.fillStyle = '#494948'
+  ctx.fillRect(
+    roadsideWidth, 0,
+    roadWidth, 100
+  )
+
+  road.forEach((part) => {
+    part.draw(ctx)
+  })
+
+  controlTrees(game)
 };
 
 
@@ -58,43 +97,15 @@ export const getRoadWidth = () => {
 export const moveRoad = (game) => {
   if (!game.road) return
   const {
-    road: { lineParts = [] },
+    road = [],
     objects: { trees = [] },
   } = game
-  lineParts.forEach((linePart) => {
-    linePart.move(game)
+
+  road.forEach((part) => {
+    part.move(game)
   })
 
   trees.forEach((tree) => {
     tree.move(game)
-  })
-}
-
-
-const getInitialMarkupLines = (game) => {
-  const {
-    linePartLength,
-    gapLength,
-    linePartWidth,
-  } = LinePart
-  const { canvas: { width: canvasWidth } } = game
-  const numberOfLines = numberOfRoadStrips - 1
-  const numberOfLineParts = roadHeight / (linePartLength + gapLength)
-  const arrayOfLinesParts = Array
-    .from({length: numberOfLineParts + 1})
-    .map((part, idx) => {
-      const x = (canvasWidth / 2 - borderWidth) - linePartWidth / 2
-      const y = (idx * (linePartLength + gapLength)) - linePartLength
-      return new LinePart(x, y)
-    })
-  return arrayOfLinesParts
-}
-
-
-const drawRoadMarkupLines = (lineParts, ctx) => {
-  const { linePartColor } = LinePart
-  ctx.fillStyle = linePartColor
-  lineParts.forEach((linePart) => {
-    linePart.draw(ctx)
   })
 }

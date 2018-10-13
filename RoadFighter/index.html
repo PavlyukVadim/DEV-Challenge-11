@@ -14,15 +14,30 @@
     }
 
     canvas {
-      /* border: 2px solid white; */
       display: block;
       margin: 0 auto;
     }
+
+    .wrapper {
+      position: relative;
+    }
+
+    .speedometer-wrapper {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+
   </style>
-  <canvas id="canvas" width="1000" height="600"></canvas>
-  <div class="speedometer-wrapper">
-    <div>Speed:</div>
-    <div id="speed"></div><div>km/h</div>
+
+  <div id="app">
+    <div class="wrapper">
+      <canvas id="canvas"></canvas>
+      <div class="speedometer-wrapper">
+        <div>Speed:</div>
+        <div id="speed"></div><div>km/h</div>
+      </div>
+    </div>
   </div>
   <!-- <script src="src/index.js"></script> -->
 </body>

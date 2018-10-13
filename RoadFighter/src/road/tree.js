@@ -1,5 +1,5 @@
 import imgSrc from './../assets/tree.png'
-import { getSpeed } from './../helpers'
+import { getSpeed, getCanvasProps } from './../helpers'
 import { getRoadWidth } from './index'
 
 class Tree {
@@ -21,24 +21,16 @@ class Tree {
   move(game) {
     const speed = getSpeed(game)
     const { y } = this
+    const { height: canvasHeight } = getCanvasProps(game)
     this.y += speed
-    if (this.y > 600) {
-      this.y = this.y - 600 - Tree.height
+    if (this.y > canvasHeight) {
+      this.y = this.y - canvasHeight - Tree.height
     }
   }
 
   draw(ctx) {
     const { x, y } = this
     ctx.drawImage(this.image, x, y, Tree.width, Tree.height)
-  }
-
-  validation() {
-    const { y } = this
-    if (
-      (y + Tree.height < -600) ||
-      (y > 600)
-    ) return false
-    return true
   }
 }
 Tree.width = 50

@@ -1,4 +1,4 @@
-import { getSpeed } from './../helpers'
+import { getSpeed, getCanvasProps } from './../helpers'
 import explosprite from './../assets/explosprite.png'
 
 const FRAME_SIZE = 128
@@ -18,9 +18,6 @@ class Explosion {
     const speed = getSpeed(game)
     const { y } = this
     this.y += speed
-    if (this.y > 600) {
-      this.y = this.y - 600 - Explosion.height
-    }
   }
 
   draw(ctx) {
@@ -41,9 +38,10 @@ class Explosion {
     this.currentFrame++
   }
 
-  validation() {
+  validation(game) {
     const { y } = this
-    if ((y < -Explosion.height / 2) || (y > 600)) return false
+    const { height: canvasHeight } = getCanvasProps(game)
+    if ((y < -Explosion.height) || (y > canvasHeight)) return false
     if (this.currentFrame > 15) return false
     return true
   }
