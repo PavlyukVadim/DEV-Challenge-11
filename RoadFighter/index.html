@@ -22,23 +22,100 @@
       position: relative;
     }
 
-    .speedometer-wrapper {
+    .map-wrapper {
       position: absolute;
-      right: 0;
-      bottom: 0;
+      left: 50px;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 300px;
+      width: 40px;
+      background-color: #4a4a4a;
     }
 
+    .map-wrapper #road {
+      display: relative;
+      margin: 3px;
+      width: calc(100% - 10px);
+      height: calc(100% - 10px);
+      border-left: 2px solid #d1bb59;
+      border-right: 2px solid #d1bb59;
+    }
+
+    .map-wrapper #road img {
+      position: absolute;
+      bottom: 0%;
+      left: 3px;
+    }
+
+    .circle-info {
+      position: absolute;
+      transform: translateY(-100%);
+      text-align: center;
+    }
+
+    #circle-number {
+      font-size: 80px;
+    }
+
+    .speed-wrapper {
+      position: absolute;
+      right: 40px;
+      bottom: 30px;
+      font-size: 30px;
+    }
+
+    .speed-info {
+      display: flex;
+    }
+
+    .circle-title {
+      margin-top: -7px;
+      margin-bottom: 12px;
+    }
+
+    .circle-info .circle {
+      text-align: left;
+    }
+
+    .circles {
+      width: 100px;
+      margin-top: 32px;
+      font-size: 18px;
+    }
   </style>
 
   <div id="app">
     <div class="wrapper">
+      <div class="map-wrapper">
+        <div class="circle-info">
+          <div id="circle-number">1</div>
+          <div class="circle-title">Circle</div>
+        </div>
+        <div id="road">
+          <img id="car-icon" src="<%= require('./src/assets/car-icon.png') %>" />
+        </div>
+        <div class="circles"></div>
+      </div>
       <canvas id="canvas"></canvas>
-      <div class="speedometer-wrapper">
-        <div>Speed:</div>
-        <div id="speed"></div><div>km/h</div>
+      <div class="speed-wrapper">
+        <div class="speed-info">
+          <div id="speed"></div>
+          <div>&nbsp;km/h</div>
+        </div>
       </div>
     </div>
   </div>
-  <!-- <script src="src/index.js"></script> -->
+  <audio id="backgroundAudio">
+    <source src="<%= require('./src/assets/background.mp3') %>" type="audio/mpeg">
+  </audio>
+  <audio id="crashAudio">
+    <source src="<%= require('./src/assets/crash.wav') %>" type="audio/mpeg">
+  </audio>
+  <audio id="enemiesCrashAudio">
+    <source src="<%= require('./src/assets/enemiesCrash.wav') %>" type="audio/mpeg">
+  </audio>
+  <audio id="applauseAudio">
+    <source src="<%= require('./src/assets/applause.wav') %>" type="audio/mpeg">
+  </audio>
 </body>
 </html>

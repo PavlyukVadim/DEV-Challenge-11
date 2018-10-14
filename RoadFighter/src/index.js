@@ -3,8 +3,6 @@ import {
   moveRoad,
 } from './road'
 
-import { drawMap } from './map'
-
 import Player from './player'
 import Enemy from './enemy'
 import Explosion from './explosion'
@@ -16,6 +14,9 @@ import {
   checkCollisions,
   controlEnemies,
   controlExplosions,
+  updateDistance,
+  removeSpeedInterval,
+  outputCurrentInfo,
 } from './helpers'
 
 import config from './config'
@@ -27,7 +28,6 @@ const canvasWidth = Math.min(
 const canvasHeight = window.innerHeight
 
 const { requestAnimationFrame } = window
-const fps = 24
 let prevTime = 0
 
 const render = (game, time) => {
@@ -37,6 +37,7 @@ const render = (game, time) => {
   } = game
 
   const speed = getSpeed(game)
+  const { fps } = config
 
   if (time - prevTime > 1000 / fps) {
     clearCanvas(ctx)
@@ -45,7 +46,9 @@ const render = (game, time) => {
     drawRoad(game)
 
     updateSpeed(game, speed)
-    outputSpeed(speed)
+    updateDistance(game)
+
+    outputCurrentInfo(game)
 
     player.move(game)
     player.draw(ctx)
@@ -54,7 +57,6 @@ const render = (game, time) => {
     controlExplosions(game)
 
     checkEnemiesCollisions(game)
-
     prevTime = time
   }
 
@@ -69,18 +71,37 @@ const checkEnemiesCollisions = (game) => {
 
   enemies.forEach((enemy) => {
     const isCollision = checkCollisions(player, enemy, Player, Enemy)
-    if (isCollision) { console.log('coli') }
+    if (isCollision) onCarCrash(game)
   })
 }
 
-const speedEl = document.getElementById('speed')
-const outputSpeed = (speed) => {
-  speedEl.innerHTML = Number(speed).toFixed(1)
+
+const crashAudioElm = document.getElementById('crashAudio')
+const onCarCrash = (game) => {
+  console.log('onCarCrash')
+
+  const { music: { background } } = game
+
+  removeSpeedInterval(game)
+  setSpeed(game, 0)
+
+  crashAudioElm.play()
+  background.pause()
+  background.currentTime = 0
+  setTimeout(() => {
+    background.play()
+  }, 1000)
 }
 
 const clearCanvas = (ctx) => {
   ctx.clearRect(0, 0, canvasWidth, canvasHeight)
 }
+
+// user first interact
+const backgroundAudioElm = document.getElementById('backgroundAudio')
+addEventListener('keydown', () => {
+  backgroundAudioElm.play()
+})
 
 window.onload = () => {
   const canvas = document.getElementById('canvas')
@@ -117,6 +138,13 @@ window.onload = () => {
       explosions: [],
     },
     road: [],
+    score: {
+      distance: 0,
+      circles: [],
+    },
+    music: {
+      background: backgroundAudioElm,
+    },
   }
   setSpeed(game, 20)
   addEventListener('keydown', (e) => player.moveCarByEvent.bind(player)(e, game))

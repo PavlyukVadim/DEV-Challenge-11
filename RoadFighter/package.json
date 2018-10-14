@@ -5,7 +5,8 @@
   "main": "webpack.config.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "webpack-dev-server --open --config webpack.config.js --progress --inline --hot"
+    "start": "webpack-dev-server --open --config webpack.config.js --progress --inline --hot",
+    "build": "webpack --config webpack.config.js -p"
   },
   "keywords": [],
   "author": "",
@@ -28,5 +29,8 @@
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9"
+  },
+  "dependencies": {
+    "express": "^4.16.4"
   }
 }

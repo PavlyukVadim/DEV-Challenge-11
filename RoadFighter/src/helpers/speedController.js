@@ -1,7 +1,7 @@
 const acceleration = 10
 
 const MAX_SPEED = 100
-const MIN_SPEED = 10
+const MIN_SPEED = 0
 
 export const setSpeed = (game, newSpeed) => {
   if (!game || !game.control) return
@@ -14,9 +14,14 @@ export const getSpeed = (game) => {
   return speed
 }
 
+export const removeSpeedInterval = (game) => {
+  game.control.removeInterval = true
+}
+
 export const updateSpeed = (game, newSpeed) => {
   const initialActivePedal = getActiveControlType(game, 'pedals')
-  if (initialActivePedal === game.control.prevPedal) return
+  const { control: { prevPedal, removeInterval } } = game
+  if ((initialActivePedal === prevPedal) && !removeInterval) return
 
   const currentSpeed = getSpeed(game)
   let timeFrom = 0
@@ -39,23 +44,28 @@ export const updateSpeed = (game, newSpeed) => {
 
     timeFrom += (intervalPeriod / 1000)
 
-    if (activePedal !== initialActivePedal) {
-      clearInterval(interval)
+    if (activePedal !== initialActivePedal || game.control.removeInterval) {
+      customClearInterval(game, interval)
     }
 
     if (initialActivePedal === 'gas') {
       if (newSpeed >= MAX_SPEED) {
         setSpeed(game, MAX_SPEED)
-        clearInterval(interval)
+        customClearInterval(game, interval)
       }
     } else {
       if (newSpeed <= MIN_SPEED) {
         setSpeed(game, MIN_SPEED)
-        clearInterval(interval)
+        customClearInterval(game, interval)
       }
     }
   }, intervalPeriod)
   game.control.prevPedal = initialActivePedal
+}
+
+const customClearInterval = (game, interval) => {
+  clearInterval(interval)
+  game.control.removeInterval = false
 }
 
 export const activatePedal = (game, pedalType) => {

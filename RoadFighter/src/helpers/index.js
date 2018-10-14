@@ -7,6 +7,7 @@ export {
   getActiveTurn,
   resetPedal,
   resetTurn,
+  removeSpeedInterval,
 } from './speedController'
 
 export {
@@ -22,4 +23,15 @@ export {
 export {
   getRoadsideWidth,
   getCanvasProps,
+  getIsAudioPlaying,
 } from './common'
+
+export {
+  updateDistance,
+  getCurrentCircle,
+} from './scoreController'
+
+export {
+  outputCurrentInfo,
+  clearCircleInfo,
+} from './outputController'

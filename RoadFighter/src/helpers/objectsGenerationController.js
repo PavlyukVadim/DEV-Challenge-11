@@ -8,7 +8,8 @@ import config from './../config'
 
 // enemies
 
-const MAX_ENEMIES_NUMBER = 3
+const enemiesCrashAudioElm = document.getElementById('enemiesCrashAudio')
+const { maxEnemiesNumber, probabilityOfEnemyCreation } = config
 export const controlEnemies = (game) => {
   const {
     ctx,
@@ -18,8 +19,8 @@ export const controlEnemies = (game) => {
     },
   } = game
 
-  if (enemies.length < MAX_ENEMIES_NUMBER) {
-    const shouldGenerateNew = Math.random() > 0.95
+  if (enemies.length < maxEnemiesNumber) {
+    const shouldGenerateNew = Math.random() < probabilityOfEnemyCreation
     if (shouldGenerateNew) {
       const enemy = new Enemy(game, enemyImg)
       enemies.push(enemy)
@@ -35,18 +36,21 @@ export const controlEnemies = (game) => {
       const removedEnemy = enemies.splice(idx, 1)[0]
       if (!removedEnemy.drawn) return
       const explosion = new Explosion(removedEnemy.x, removedEnemy.y)
-      explosions.push(explosion)
+      const isExplosionAlive = explosion.validation(game)
+      if (isExplosionAlive) {
+        enemiesCrashAudioElm.play()
+        explosions.push(explosion)
+      }
     }
   })
 }
 
 // trees
 
-const MAX_TREES_NUMBER = 50
-const { probabilityOfTreeCreation } = config
+const { maxTreesNumber, probabilityOfTreeCreation } = config
 export const controlTrees = (game) => {
   const { objects: { trees }, ctx } = game
-  if (trees.length < MAX_TREES_NUMBER) {
+  if (trees.length < maxTreesNumber) {
     const shouldGenerateNew = Math.random() < probabilityOfTreeCreation
     if (shouldGenerateNew) {
       const tree = new Tree(game)

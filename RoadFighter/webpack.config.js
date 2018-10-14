@@ -35,7 +35,13 @@ module.exports = {
           'url-loader?limit=10000',
           'img-loader'
         ]
-      }
+      },
+      {
+        test: /\.(wav|mp3)$/,
+        use: [
+          'file-loader',
+        ]
+      },
     ],
   },
   devtool: 'source-map',

@@ -1,13 +1,20 @@
-export const checkCollisions = (obj1, obj2, obj1Props, obj2Props) => {
+export const checkCollisions = (
+  obj1,
+  obj2,
+  obj1Props,
+  obj2Props,
+  obj1Border = 10,
+  obj2Border = 10,
+) => {
   if (
     (
       (
-        (obj1.x <= obj2.x + obj2Props.width) &&
-        (obj1.x >= obj2.x)
+        (obj1.x + obj1Border <= obj2.x + obj2Props.width - obj2Border) &&
+        (obj1.x + obj1Border >= obj2.x + obj2Border)
       ) ||
       (
-        (obj1.x + obj1Props.width >= obj2.x) &&
-        (obj1.x + obj1Props.width <= obj2.x + obj2Props.width)
+        (obj1.x + obj1Props.width - obj1Border >= obj2.x + obj2Border) &&
+        (obj1.x + obj1Props.width - obj1Border <= obj2.x + obj2Props.width - obj2Border)
       )
     ) &&
     (
