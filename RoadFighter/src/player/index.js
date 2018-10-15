@@ -11,11 +11,28 @@ import {
 } from './../helpers'
 
 import { getRoadWidth } from './../road'
+
 import playerImg from './../assets/car.png'
+import playerImg2 from './../assets/car2.png'
+
+const car1El = document.getElementById('car1')
+const car2El = document.getElementById('car2')
+
+car1El.onclick = () => {
+  car1El.classList.add('active-car')
+  car2El.classList.remove('active-car')
+  Player.image.src = playerImg
+}
+
+car2El.onclick = () => {
+  car2El.classList.add('active-car')
+  car1El.classList.remove('active-car')
+  Player.image.src = playerImg2
+}
 
 class Player extends Car {
-  constructor(x = 300, y = 400, imgSrc = playerImg) {
-    super(x, y, imgSrc)
+  constructor(x = 300, y = 400) {
+    super(x, y)
     this.rotationDirection = null
   }
 
@@ -38,11 +55,11 @@ class Player extends Car {
 
       // Rotate the canvas around the origin
       ctx.rotate(rad)
-      ctx.drawImage(this.image, pWidth / 2 * (-1), pHeight / 5 * (-1), pWidth, pHeight)
+      ctx.drawImage(Player.image, pWidth / 2 * (-1), pHeight / 5 * (-1), pWidth, pHeight)
 
       ctx.restore()
     } else {
-      ctx.drawImage(this.image, x, y, Player.width, Player.height)
+      ctx.drawImage(Player.image, x, y, Player.width, Player.height)
     }
   }
 
@@ -114,5 +131,7 @@ class Player extends Car {
 Player.height = 160
 Player.width = 80
 Player.rotationDeg = 10
+Player.image = new Image()
+Player.image.src = playerImg
 
 export default Player

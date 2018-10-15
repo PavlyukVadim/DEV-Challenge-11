@@ -82,6 +82,31 @@
       margin-top: 32px;
       font-size: 18px;
     }
+
+    .cars-wrapper {
+      position: absolute;
+      top: 0;
+      right: 40px;
+      font-size: 18px;
+      margin: 15px;
+      text-align: center;
+    }
+
+    .cars-wrapper .cars {
+      display: flex;
+      justify-content: center;
+    }
+
+    .cars-wrapper .cars > div {
+      margin: 5px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .active-car {
+      border: 2px solid red !important;
+    }
+
   </style>
 
   <div id="app">
@@ -97,6 +122,17 @@
         <div class="circles"></div>
       </div>
       <canvas id="canvas"></canvas>
+      <div class="cars-wrapper">
+        <div>Choose the cars view:</div>
+        <div class="cars">
+          <div id="car1" class="active-car">
+            <img width="50px" src="<%= require('./src/assets/car.png') %>" />
+          </div>
+          <div id="car2">
+            <img width="50px" src="<%= require('./src/assets/car2.png') %>" />
+          </div>
+        </div>
+      </div>
       <div class="speed-wrapper">
         <div class="speed-info">
           <div id="speed"></div>
